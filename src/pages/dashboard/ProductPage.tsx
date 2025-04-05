@@ -2,7 +2,7 @@ import { Typography, Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-import { voucherData } from "../../data/VoucherData";
+import { Voucher } from "../../types";
 import { VoucherCard } from "../../components";
 
 const ProductPage = () => {
@@ -40,11 +40,11 @@ const ProductPage = () => {
         )}
       </Box>
       {/* List Voucher */}
-      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+      {/* <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         {voucherData.map((game) => (
           <VoucherCard key={game.id} name={game.name} image={game.image} />
         ))}
-      </Box>
+      </Box> */}
       {/* Mobile Floating Button */}
       {isMobile && (
         <Box

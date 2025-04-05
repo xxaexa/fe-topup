@@ -1,13 +1,14 @@
 // Home.tsx
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Skeleton, TextField } from "@mui/material";
 import { useState } from "react";
 import { CustomSlider, VoucherCard } from "../../components";
-import { voucherData } from "../../data/VoucherData";
+import { useGetVouchersQuery } from "../../redux/api/voucherApi";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
+  const { data: vouchers = [], isLoading } = useGetVouchersQuery();
 
-  const filteredGames = voucherData.filter((game) =>
+  const filteredGames = vouchers.filter((game) =>
     game.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -33,14 +34,21 @@ const HomePage = () => {
         sx={{ my: 3 }}
       />
 
-      {/* List Voucher */}
-      <Typography variant="h6" mb={2}>
-        List Voucher
-      </Typography>
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-        {filteredGames.map((game) => (
-          <VoucherCard key={game.id} name={game.name} image={game.image} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 4 }).map((_, idx) => (
+              <Skeleton
+                key={idx}
+                variant="rectangular"
+                width={250}
+                height={300}
+                animation="wave"
+                sx={{ borderRadius: 2 }}
+              />
+            ))
+          : filteredGames.map((game) => (
+              <VoucherCard key={game._id} name={game.name} image={game.image} />
+            ))}
       </Box>
     </Box>
   );

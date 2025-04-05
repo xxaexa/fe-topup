@@ -27,14 +27,14 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/tracking" element={<TrackPage />} />
-        <Route path="/voucher/:gameId" element={<VoucherPage />} />
+        <Route path="/voucher/:gameName" element={<VoucherPage />} />
       </Route>
 
       {/* ADMIN Layout */}
       <Route path="/dashboard" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="products" element={<ProductPage />} />
-        <Route path="product/edit/:name" element={<EditProductPage />} />
+        <Route path="product/edit/:gameName" element={<EditProductPage />} />
         <Route path="transactions" element={<TransactionPage />} />
       </Route>
     </Routes>

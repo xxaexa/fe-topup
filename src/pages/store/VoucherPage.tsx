@@ -1,18 +1,33 @@
 import { useParams } from "react-router-dom";
-import { Box, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import VoucherForm from "../../components/VoucherForm";
-import { voucherData } from "../../data/VoucherData";
+import { useGetVoucherByIdQuery } from "../../redux/api/voucherApi";
 
 const VoucherPage = () => {
-  const { gameId } = useParams();
-  const selectedGame = voucherData.find((game) => game.name === gameId);
-
-  if (!selectedGame) {
+  const { gameName } = useParams();
+  const { data, isLoading, isError } = useGetVoucherByIdQuery(gameName || "");
+  console.log(data);
+  if (isLoading) {
     return (
-      <Container>
-        <Typography variant="h5" mt={4} textAlign="center">
-          Game tidak ditemukan 😥
-        </Typography>
+      <Container sx={{ mt: 4, textAlign: "center" }}>
+        <CircularProgress />
+        <Typography mt={2}>Loading.....</Typography>
+      </Container>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <Container sx={{ mt: 4 }}>
+        <Alert severity="error">
+          Gagal memuat data game atau game tidak ditemukan.
+        </Alert>
       </Container>
     );
   }
@@ -20,24 +35,24 @@ const VoucherPage = () => {
   return (
     <Container sx={{ mt: 4 }}>
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
-        {/* Kiri - Info Game */}
+        {/* left - Info Game */}
         <Box flex={{ xs: "1 1 100%", md: "1 1 33%" }}>
           <img
-            src={selectedGame.image}
-            alt={selectedGame.name}
+            src={data.image}
+            alt={data.name}
             style={{ width: "100%", borderRadius: "8px", marginBottom: "1rem" }}
           />
           <Typography variant="h6" gutterBottom>
-            {selectedGame.name}
+            {data.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {selectedGame.description}
-          </Typography>
+          {/* <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography> */}
         </Box>
 
-        {/* Kanan - Form Voucher */}
+        {/* right - Form Voucher */}
         <Box flex={{ xs: "1 1 100%", md: "1 1 66%" }}>
-          <VoucherForm game={selectedGame} />
+          <VoucherForm game={data} />
         </Box>
       </Box>
     </Container>
